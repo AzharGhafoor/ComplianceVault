@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ComplianceVault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-gradient);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            padding: 0.5rem 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            border-radius: var(--radius-md);
+            margin: 0.25rem 0.5rem;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-link:hover {
+            background: var(--bg-glass);
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .nav-link svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gradient);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: capitalize;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+        }
+
+        /* Score Cards */
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .score-card {
+            padding: 1.5rem;
+        }
+
+        .score-card-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .score-card-value.green {
+            color: var(--color-success);
+        }
+
+        .score-card-value.amber {
+            color: var(--color-warning);
+        }
+
+        .score-card-value.red {
+            color: var(--color-danger);
+        }
+
+        .score-card-change {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Charts Grid */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            padding: 1.5rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        /* Domain List */
+        .domain-list {
+            margin-bottom: 2rem;
+        }
+
+        .domain-item {
+            display: grid;
+            grid-template-columns: 60px 1fr 120px 100px;
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background var(--transition-fast);
+        }
+
+        .domain-item:hover {
+            background: var(--bg-glass);
+        }
+
+        .domain-item:last-child {
+            border-bottom: none;
+        }
+
+        .domain-code {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        .domain-info h4 {
+            font-size: 0.9375rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .domain-info p {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        .domain-progress {
+            width: 100%;
+        }
+
+        .domain-score {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        /* Critical Alerts */
+        .critical-section {
+            margin-bottom: 2rem;
+        }
+
+        .critical-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .critical-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-danger);
+        }
+
+        .alert-card {
+            background: var(--color-danger-bg);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .alert-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alert-icon {
+            color: var(--color-danger);
+        }
+
+        /* Loading State */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem;
+        }
+
+        @media (max-width: 1200px) {
+            .score-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+
+            #reqGrid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .score-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .domain-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .domains-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .security-profile-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .security-profile-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .security-badge {
+            padding: 0.35rem 0.85rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid currentColor;
+        }
+
+        .sec-high {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+
+        .sec-medium {
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+        }
+
+        .sec-low {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
+        .target-stat {
+            text-align: right;
+        }
+
+        .target-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="/" class="sidebar-logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                        </svg>
+                    </div>
+                    <span class="text-gradient">ComplianceVault</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <a href="index.html" class="nav-link active">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                            <polyline points="9 22 9 12 15 12 15 22" />
+                        </svg>
+                        Dashboard
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Assessment</div>
+                    <a href="assessment.html" class="nav-link">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg>
+                        Controls
+                    </a>
+                    <a href="domains.html" class="nav-link">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        Domains
+                    </a>
+                    <a href="bia.html" class="nav-link" id="navBia">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                        </svg>
+                        Business Impact
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="history.html" class="nav-link">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        Change Log
+                    </a>
+                    <a href="users.html" class="nav-link" id="navTeam">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                            <path d="M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                        Team
+                    </a>
+                    <a href="methodology.html" class="nav-link">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="16" x2="12" y2="12" />
+                            <line x1="12" y1="8" x2="12.01" y2="8" />
+                        </svg>
+                        Scoring
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-role" id="userRole">-</div>
+                    </div>
+                    <button class="btn btn-icon btn-ghost" id="logoutBtn" title="Logout">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Compliance Dashboard</h1>
+                <p class="page-subtitle" id="orgName">Loading organization data...</p>
+            </div>
+
+            <!-- Security Profile -->
+            <div class="security-profile-card" id="securityProfile">
+                <div class="profile-info">
+                    <h2>
+                        Security Level: <span id="secLevelBadge" class="security-badge">-</span>
+                    </h2>
+                    <p class="text-secondary text-lg" id="secTarget">BIA Required to determine target</p>
+                </div>
+                <div class="target-stat">
+                    <div class="target-value text-gradient" id="targetCompliance">--%</div>
+                    <div class="text-secondary text-sm">Compliance with Target</div>
+                </div>
+            </div>
+
+
+
+            <!-- Detailed Requirements Grid -->
+            <div class="score-cards" id="reqGrid">
+                <div class="glass-card score-card">
+                    <div class="score-card-label">Baseline Controls</div>
+                    <div class="score-card-value text-primary" id="baseReqScore">--</div>
+                    <div class="score-card-change text-muted" id="baseReqText">-- / -- Applied</div>
+                </div>
+                <div class="glass-card score-card">
+                    <div class="score-card-label">Additional Controls</div>
+                    <div class="score-card-value text-info" id="addReqScore">--</div>
+                    <div class="score-card-change text-muted" id="addReqText">-- / -- Applied</div>
+                </div>
+                <div class="glass-card score-card">
+                    <div class="score-card-label">Overall Completion</div>
+                    <div class="score-card-value" id="overallScore">--%</div>
+                    <div class="score-card-change text-muted" id="evalProgress">-- of -- controls evaluated</div>
+                </div>
+                <div class="glass-card score-card">
+                    <div class="score-card-label">📎 Evidence Coverage</div>
+                    <div class="score-card-value" id="evidenceCoverage" style="color: var(--accent-secondary)">--%</div>
+                    <div class="score-card-change text-muted" id="evidenceCoverageText">-- of -- controls with evidence
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Calculation Breakdown -->
+            <div class="glass-card" style="margin-bottom: 2rem;">
+                <details>
+                    <summary class="flex justify-between items-center cursor-pointer list-none" style="padding: 1rem;">
+                        <h3 class="chart-title" style="margin: 0;">📊 Score Calculation Breakdown</h3>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </summary>
+                    <div style="padding: 0 1rem 1rem 1rem; border-top: 1px solid var(--border-color);">
+                        <!-- Formula Explanation -->
+                        <div
+                            style="background: rgba(99, 102, 241, 0.1); border-left: 3px solid var(--accent-primary); padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+                            <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                                <strong style="color: var(--text-primary);">Compliance Score Formula:</strong>
+                            </p>
+                            <code
+                                style="display: block; background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.875rem;">
+                                Score = (Fully × 1.0 + Partial × 0.5 + Low × 0.25) / Applicable × 100%
+                            </code>
+                            <p
+                                style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic;">
+                                💡 Credits: Fully=100%, Partial=50%, Low=25%, Not Applied=0%
+                            </p>
+                        </div>
+
+                        <!-- Actual Calculation Values -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Baseline Calculation -->
+                            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem;">
+                                <h4
+                                    style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--accent-primary);">
+                                    Baseline Controls Calculation
+                                </h4>
+                                <div id="baselineCalcDetails"
+                                    style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8;">
+                                    Loading...
+                                </div>
+                            </div>
+
+                            <!-- Additional Calculation -->
+                            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem;">
+                                <h4
+                                    style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--accent-secondary);">
+                                    Additional Controls Calculation
+                                </h4>
+                                <div id="additionalCalcDetails"
+                                    style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8;">
+                                    Loading...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Overall Calculation -->
+                        <div
+                            style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15)); padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
+                            <h4 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem;">
+                                Overall Compliance Calculation
+                            </h4>
+                            <div id="overallCalcDetails"
+                                style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.8;">
+                                Loading...
+                            </div>
+                        </div>
+
+                        <!-- BIA Adjustment Info -->
+                        <div
+                            style="background: rgba(251, 146, 60, 0.1); border-left: 3px solid #fb923c; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
+                            <h4 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; color: #fb923c;">
+                                🎯 BIA-Based Target Adjustment
+                            </h4>
+                            <div id="biaAdjustmentDetails"
+                                style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.6;">
+                                Loading...
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-row">
+                <div class="glass-card chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Detailed Progress</h3>
+                    </div>
+                    <div style="height: 250px;">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+                <div class="glass-card chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Compliance by Status</h3>
+                    </div>
+                    <div style="height: 250px;">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card domain-list" style="margin-bottom: 2rem;">
+                <div class="chart-header">
+                    <h3 class="chart-title">Domain Compliance</h3>
+                </div>
+                <div style="height: 500px;">
+                    <canvas id="domainChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Critical Alerts -->
+            <div class="critical-section" id="criticalSection">
+                <div class="critical-header">
+                    <h3 class="critical-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                        </svg>
+                        Critical Domains
+                    </h3>
+                    <span class="text-muted text-sm">Domains with compliance score below 50%</span>
+                </div>
+                <div id="criticalAlerts">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Domain Overview -->
+            <div class="glass-card domain-list">
+                <div class="chart-header">
+                    <h3 class="chart-title">All Domains</h3>
+                    <a href="domains.html" class="btn btn-secondary btn-sm">View All</a>
+                </div>
+                <div id="domainList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { auth, organization, dashboard, isAuthenticated, getUser } from '../js/api.js';
+
+        // Check authentication
+        if (!isAuthenticated()) {
+            window.location.href = '../auth/login.html';
+        }
+
+        // Load user info
+        const user = getUser();
+        if (user) {
+            document.getElementById('userAvatar').textContent = (user.first_name?.[0] || user.email[0]).toUpperCase();
+            document.getElementById('userName').textContent = user.first_name ? `${user.first_name} ${user.last_name || ''}` : user.email;
+            document.getElementById('userRole').textContent = user.role;
+
+            // Hide admin-only nav links for non-admin users
+            if (user.role !== 'admin') {
+                document.getElementById('navBia')?.remove();
+                document.getElementById('navTeam')?.remove();
+            }
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            auth.logout();
+        });
+
+        // Get score color
+        function getScoreColor(score) {
+            if (score >= 80) return 'green';
+            if (score >= 50) return 'amber';
+            return 'red';
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                // Load organization info
+                const org = await organization.get();
+                document.getElementById('orgName').textContent = org.name;
+
+                // Load dashboard overview
+                const data = await dashboard.getOverview();
+
+                // Update score cards with partial credit
+                // Detailed Requirement Cards
+                // Detailed Requirement Cards
+                const baselinePartial = data.baseline_partially_applied || 0;
+                const baselineLow = data.baseline_low_applied || 0;
+                const baselineScoreCalc = data.baseline_controls > 0
+                    ? Math.round((data.baseline_fully_applied + 0.5 * baselinePartial + 0.25 * baselineLow) / data.baseline_controls * 100)
+                    : 0;
+                document.getElementById('baseReqScore').textContent = baselineScoreCalc + '%';
+
+                // Format text: Fully + Partial (if >0) + Low (if >0)
+                let baseText = `${data.baseline_fully_applied}`;
+                if (baselinePartial > 0) baseText += `+${baselinePartial}`;
+                if (baselineLow > 0) baseText += `+${baselineLow}`;
+                document.getElementById('baseReqText').textContent = `${baseText} / ${data.baseline_controls} Applied`;
+
+                // Use calculated target for additional controls
+                const addTarget = data.additional_controls_required || data.additional_applicable_controls;
+                const addApplied = data.additional_fully_applied;
+                const addPartial = data.additional_partially_applied || 0;
+                const addLow = data.additional_low_applied || 0;
+                const addScoreCalc = addTarget > 0
+                    ? Math.round((addApplied + 0.5 * addPartial + 0.25 * addLow) / addTarget * 100)
+                    : 0;
+
+                document.getElementById('addReqScore').textContent = addScoreCalc + '%';
+
+                let addText = `${addApplied}`;
+                if (addPartial > 0) addText += `+${addPartial}`;
+                if (addLow > 0) addText += `+${addLow}`;
+                document.getElementById('addReqText').textContent = `${addText} / ${addTarget} Applied`;
+
+                // Overall score already uses the correct formula from backend
+                const overallEl = document.getElementById('overallScore');
+                overallEl.textContent = data.overall_score + '%';
+                overallEl.className = 'score-card-value ' + getScoreColor(data.overall_score);
+
+                // Update progress text to show fully+partially
+                // Update progress text to show fully+partially+low
+                const totalFully = data.fully_applied;
+                const totalPartial = data.partially_applied;
+                const totalLow = data.low_applied || 0;
+
+                let progressText = `${totalFully}`;
+                if (totalPartial > 0) progressText += `+${totalPartial}`;
+                if (totalLow > 0) progressText += `+${totalLow}`;
+
+                document.getElementById('evalProgress').textContent =
+                    `${progressText} of ${data.total_controls} controls (${data.evaluated_controls} evaluated)`;
+
+                // Evidence Coverage Card
+                const evidencePercent = data.evidence_coverage_percent || 0;
+                const controlsWithEvidence = data.controls_with_evidence || 0;
+                document.getElementById('evidenceCoverage').textContent = evidencePercent + '%';
+                document.getElementById('evidenceCoverageText').textContent =
+                    `${controlsWithEvidence} of ${data.evaluated_controls} controls with evidence`;
+
+                // --- Populate Score Calculation Breakdown ---
+                // Baseline calculation (reuse baselinePartial from above)
+                const baselineScore = data.baseline_score || 0;
+                document.getElementById('baselineCalcDetails').innerHTML = `
+                    <div><strong>Fully:</strong> ${data.baseline_fully_applied} | <strong>Partial:</strong> ${baselinePartial} | <strong>Low:</strong> ${baselineLow}</div>
+                    <div style="margin-top: 0.25rem;"><strong>Total Baseline:</strong> ${data.baseline_controls}</div>
+                    <div style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px; font-family: monospace; font-size: 0.75rem;">
+                        = (F×1 + P×0.5 + L×0.25) / Total × 100<br>
+                        = (${data.baseline_fully_applied} + ${baselinePartial * 0.5} + ${baselineLow * 0.25}) / ${data.baseline_controls} × 100<br>
+                        = <strong style="color: var(--accent-primary);">${baselineScore}%</strong>
+                    </div>
+                `;
+
+                // Additional calculation (reuse addPartial from above)
+                const addScore = addTarget > 0 ? Math.round((addApplied + addPartial * 0.5 + addLow * 0.25) / addTarget * 100 * 10) / 10 : 0;
+                document.getElementById('additionalCalcDetails').innerHTML = `
+                    <div><strong>Fully:</strong> ${addApplied} | <strong>Partial:</strong> ${addPartial} | <strong>Low:</strong> ${addLow}</div>
+                    <div style="margin-top: 0.25rem;"><strong>Target:</strong> ${addTarget}</div>
+                    <div style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px; font-family: monospace; font-size: 0.75rem;">
+                        = (F×1 + P×0.5 + L×0.25) / Target × 100<br>
+                        = (${addApplied} + ${addPartial * 0.5} + ${addLow * 0.25}) / ${addTarget} × 100<br>
+                        = <strong style="color: var(--accent-secondary);">${addScore}%</strong>
+                    </div>
+                `;
+
+                // Overall calculation
+                const totalApplicable = data.baseline_controls + addTarget;
+                document.getElementById('overallCalcDetails').innerHTML = `
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div><strong>Applicable:</strong></div>
+                        <div>${data.baseline_controls} + ${addTarget} = <strong>${totalApplicable}</strong></div>
+                        <div><strong>Fully:</strong></div>
+                        <div>${data.baseline_fully_applied} + ${addApplied} = <strong>${totalFully}</strong></div>
+                        <div><strong>Partial:</strong></div>
+                        <div>${baselinePartial} + ${addPartial} = <strong>${totalPartial}</strong></div>
+                        <div><strong>Low:</strong></div>
+                        <div>${baselineLow} + ${addLow} = <strong>${totalLow}</strong></div>
+                    </div>
+                    <div style="margin-top: 0.75rem; padding: 0.75rem; background: rgba(0,0,0,0.3); border-radius: 4px; font-family: monospace; text-align: center;">
+                        Score = (F×1 + P×0.5 + L×0.25) / Total × 100 = 
+                        <strong style="color: white; font-size: 1.25rem;">${data.overall_score}%</strong>
+                    </div>
+                `;
+
+                // BIA adjustment explanation
+                const biaLevel = data.bia_level || 'Low';
+                const biaMultiplier = biaLevel === 'High' ? 2 : (biaLevel === 'Medium' ? 1 : 0);
+                const domainCount = data.domain_scores ? data.domain_scores.length : 0;
+                document.getElementById('biaAdjustmentDetails').innerHTML = `
+                    <div><strong>Security Level:</strong> <span class="security-badge sec-${biaLevel.toLowerCase()}">${biaLevel}</span></div>
+                    <div style="margin-top: 0.5rem;"><strong>Additional Controls Per Domain:</strong> ${biaMultiplier}</div>
+                    <div><strong>Domains:</strong> ${domainCount}</div>
+                    <div style="margin-top: 0.5rem; font-family: monospace; background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 4px;">
+                        Additional Required = ${domainCount} domains × ${biaMultiplier} = <strong>${domainCount * biaMultiplier}</strong> controls
+                    </div>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--text-muted);">
+                        ${biaLevel === 'Low' ? '📌 Baseline controls only - no additional required' :
+                        biaLevel === 'Medium' ? '📌 Medium security: At least 1 additional control per domain' :
+                            '📌 High security: At least 2 additional controls per domain'}
+                    </p>
+                `;
+
+                // Needs attention (moved to bottom or keep?)
+                // document.getElementById('needsAttention').textContent = ... 
+
+                // Progress Chart
+                new Chart(document.getElementById('progressChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Baseline Controls', 'Additional Controls'],
+                        datasets: [
+                            {
+                                label: 'Fully Applied',
+                                data: [data.baseline_fully_applied, data.additional_fully_applied],
+                                backgroundColor: '#10b981',
+                                stack: 'Stack 0',
+                            },
+                            {
+                                label: 'Required Remaining',
+                                data: [
+                                    data.baseline_controls - data.baseline_fully_applied,
+                                    Math.max(0, addTarget - addApplied)
+                                ],
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                stack: 'Stack 0',
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { stacked: true, grid: { display: false }, ticks: { color: '#9ca3af' } },
+                            y: { stacked: true, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } }
+                        },
+                        plugins: { legend: { labels: { color: '#9ca3af' } } }
+                    }
+                });
+
+                // Security Profile
+                const secBadge = document.getElementById('secLevelBadge');
+                const level = data.bia_level || 'Low';
+                secBadge.textContent = level;
+                secBadge.className = `security-badge sec-${level.toLowerCase()}`;
+
+                document.getElementById('secTarget').innerHTML = `Target: <strong class="text-primary">${data.bia_target}</strong> per domain`;
+
+                // Calculate Target Compliance
+                // If Low: use Baseline Score. If Med/High: Use Overall (Simplify for now, or use target_score from API)
+                const targetScore = data.target_score || data.baseline_score;
+                document.getElementById('targetCompliance').textContent = targetScore + '%';
+
+
+                // Status chart
+                new Chart(document.getElementById('statusChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Fully Applied', 'Partially Applied', 'Low Applied', 'Not Applied', 'Not Evaluated'],
+                        datasets: [{
+                            data: [
+                                data.fully_applied,
+                                data.partially_applied,
+                                data.low_applied || 0,
+                                data.not_applied,
+                                data.total_controls - data.evaluated_controls
+                            ],
+                            backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#374151'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '65%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#9ca3af', padding: 8, font: { size: 10 } }
+                            }
+                        }
+                    }
+                });
+
+                // Domain chart (Stacked: Baseline vs Additional)
+                const topDomains = data.domain_scores.slice(0, 10);
+                new Chart(document.getElementById('domainChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: topDomains.map(d => d.domain_code),
+                        datasets: [
+                            {
+                                label: 'Baseline',
+                                data: topDomains.map(d => d.baseline_fully_applied),
+                                backgroundColor: '#3b82f6',
+                            },
+                            {
+                                label: 'Additional',
+                                data: topDomains.map(d => d.additional_fully_applied),
+                                backgroundColor: '#10b981',
+                            },
+                            {
+                                label: 'Missing',
+                                data: topDomains.map(d => {
+                                    const target = d.baseline_controls + Math.max(d.additional_control_target, d.additional_applicable);
+                                    const applied = d.baseline_fully_applied + d.additional_fully_applied;
+                                    return target - applied;
+                                }),
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            }
+                        ]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                grid: { color: 'rgba(255,255,255,0.1)' },
+                                ticks: { color: '#9ca3af' }
+                            },
+                            y: {
+                                stacked: true,
+                                grid: { display: false },
+                                ticks: { color: '#9ca3af' }
+                            }
+                        },
+                        plugins: {
+                            legend: { labels: { color: '#9ca3af' } }
+                        }
+                    }
+                });
+
+                // Critical alerts
+                const criticalContainer = document.getElementById('criticalAlerts');
+                if (data.critical_domains.length === 0) {
+                    document.getElementById('criticalSection').style.display = 'none';
+                } else {
+                    criticalContainer.innerHTML = data.critical_domains.map(d => `
+                        <div class="alert-card">
+                            <div class="alert-content">
+                                <svg class="alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                                </svg>
+                                <div>
+                                    <strong>${d.domain_code}</strong> - ${d.domain}
+                                    <div class="text-sm text-muted">${d.fully_applied} of ${d.total_controls} controls applied</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-danger">${d.score}%</span>
+                        </div>
+                    `).join('');
+                }
+
+                // Domain list
+                const domainList = document.getElementById('domainList');
+                domainList.innerHTML = data.domain_scores.map(d => `
+                    <div class="domain-item">
+                        <div class="domain-code">${d.domain_code}</div>
+                        <div class="domain-info">
+                            <h4>${d.domain}</h4>
+                            <p>${d.total_controls} controls (${d.baseline_controls} baseline)</p>
+                        </div>
+                        <div class="domain-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill ${d.status}" style="width: ${d.score}%"></div>
+                            </div>
+                        </div>
+                        <div class="domain-score" style="color: var(--color-${d.status === 'green' ? 'success' : d.status === 'amber' ? 'warning' : 'danger'})">${d.score}%</div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Failed to load dashboard:', error);
+            }
+        }
+
+        loadDashboard();
+    </script>
+</body>
+
+</html>

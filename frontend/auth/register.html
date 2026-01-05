@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - ComplianceVault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-gradient);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .auth-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: var(--text-secondary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .auth-submit {
+            width: 100%;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .error-message {
+            background: var(--color-danger-bg);
+            border: 1px solid var(--color-danger);
+            color: var(--color-danger);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @media (max-width: 500px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-page">
+        <div class="glass-card auth-card">
+            <div class="auth-header">
+                <a href="/" class="auth-logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                        </svg>
+                    </div>
+                    <span class="text-gradient">ComplianceVault</span>
+                </a>
+                <h1>Create Account</h1>
+                <p>Register your organization for NIAP compliance assessment</p>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+
+            <form id="registerForm">
+                <div class="section-title">Personal Information</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="firstName">First Name</label>
+                        <input type="text" id="firstName" class="form-input" placeholder="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="lastName">Last Name</label>
+                        <input type="text" id="lastName" class="form-input" placeholder="Doe" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" id="email" class="form-input" placeholder="john@company.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Minimum 8 characters" required
+                        minlength="8">
+                </div>
+
+                <div class="section-title">Organization Details</div>
+
+                <div class="form-group">
+                    <input type="text" id="orgName" class="form-input" placeholder="Your Company Ltd." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="orgDomain">Domain</label>
+                    <input type="text" id="orgDomain" class="form-input" placeholder="example.com" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="orgEmail">Org. Email</label>
+                        <input type="email" id="orgEmail" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="orgPhone">Contact Number</label>
+                        <input type="tel" id="orgPhone" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="sector">Sector</label>
+                        <select id="sector" class="form-input form-select">
+                            <option value="">Select sector</option>
+                            <option value="government">Government</option>
+                            <option value="finance">Finance & Banking</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="energy">Energy & Utilities</option>
+                            <option value="telecom">Telecommunications</option>
+                            <option value="education">Education</option>
+                            <option value="retail">Retail & Commerce</option>
+                            <option value="technology">Technology</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="size">Organization Size</label>
+                        <select id="size" class="form-input form-select">
+                            <option value="">Select size</option>
+                            <option value="small">Small (1-50)</option>
+                            <option value="medium">Medium (51-200)</option>
+                            <option value="large">Large (201-1000)</option>
+                            <option value="enterprise">Enterprise (1000+)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary auth-submit" id="submitBtn">
+                    Create Account
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="login.html">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, isAuthenticated } from '../js/api.js';
+
+        if (isAuthenticated()) {
+            window.location.href = '../dashboard/';
+        }
+
+        const form = document.getElementById('registerForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                first_name: document.getElementById('firstName').value,
+                last_name: document.getElementById('lastName').value,
+                organization_name: document.getElementById('orgName').value,
+                organization_sector: document.getElementById('sector').value || null,
+                organization_size: document.getElementById('size').value || null,
+                organization_sector: document.getElementById('sector').value || null,
+                organization_size: document.getElementById('size').value || null,
+                organization_country: 'Qatar',
+                organization_contact_email: document.getElementById('orgEmail').value,
+                organization_contact_phone: document.getElementById('orgPhone').value,
+                organization_domain: document.getElementById('orgDomain').value
+            };
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating account...';
+            errorMessage.classList.remove('show');
+
+            try {
+                await auth.register(data);
+                window.location.href = '../dashboard/';
+            } catch (error) {
+                errorMessage.textContent = error.message;
+                errorMessage.classList.add('show');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Account';
+            }
+        });
+    </script>
+</body>
+
+</html>
