@@ -19,10 +19,10 @@ class Settings(BaseSettings):
     
     # CORS
     # CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://localhost:8000,http://127.0.0.1:8000"
-    CORS_ORIGINS: str = "http://localhost:8000,https://github.com/AzharGhafoor/ComplianceVault,https://AzharGhafoor.github.io,https://compliancevault-production.up.railway.app/"
+    CORS_ORIGINS: str = "https://azharghafoor.github.io,https://compliance.azbers.com,https://compliancevault-production.up.railway.app"
     
     # File uploads
-    UPLOAD_DIR: str = "uploads"
+    UPLOAD_DIR: str = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH", "uploads") + "/uploads" if "RAILWAY_VOLUME_MOUNT_PATH" in os.environ else "uploads"
     MAX_FILE_SIZE: int = 10 * 1024 * 1024  # 10MB
     
     class Config:
