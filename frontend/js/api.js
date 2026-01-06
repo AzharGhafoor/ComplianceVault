@@ -2,7 +2,9 @@
  * ComplianceVault - API Client
  */
 
-const API_BASE = window.location.origin + '/api';
+// const API_BASE = window.location.origin + '/api';
+const API_BASE = "https://compliancevault-production.up.railway.app/"
+
 
 // Token storage
 const TOKEN_KEY = 'cv_token';
