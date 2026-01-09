@@ -75,7 +75,10 @@ def reset_database():
         db.commit()
         
         # 3. Clean uploads directory
-        uploads_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "uploads")
+        if "RAILWAY_VOLUME_MOUNT_PATH" in os.environ:
+            uploads_dir = os.path.join(os.environ.get("RAILWAY_VOLUME_MOUNT_PATH"), "uploads")
+        else:
+            uploads_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "uploads")
         if os.path.exists(uploads_dir):
             print("Cleaning uploads directory...")
             for filename in os.listdir(uploads_dir):
