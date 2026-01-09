@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     
     # CORS
     # CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://localhost:8000,http://127.0.0.1:8000"
-    CORS_ORIGINS: str = "https://azharghafoor.github.io,https://compliance.azbers.com,https://compliancevault-production.up.railway.app"
+    CORS_ORIGINS: str = "https://azharghafoor.github.io,https://compliance.azbers.com,https://compliancevault.netlify.app,https://compliancevault-production.up.railway.app"
     
     # File uploads (will be set in __init__ for Railway)
     UPLOAD_DIR: str = "uploads"
