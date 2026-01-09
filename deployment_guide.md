@@ -34,32 +34,82 @@ Before deploying, you need to push your code to a new GitHub repository.
 
 ## Step 1: Backend Deployment (Render.com)
 
-1.  **Create a Render Account**: Go to [render.com](https://render.com).
-2.  **New Web Service**: Connect your GitHub repository.
-3.  **Configure**:
-    -   **Runtime**: `Python`
-    -   **Build Command**: `pip install -r requirements.txt`
-    -   **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-4.  **Persistent Storage** (Optional but Recommended):
-    -   SQLite files get deleted every time Render restarts on the free tier.
-    -   To keep data, go to **Disk** -> **Add Disk** and mount it at `/data`.
-    -   Update your `.env` to `DATABASE_URL=sqlite:////data/compliance_vault.db`.
-5.  **Environment Variables**:
-    -   Add `SECRET_KEY` (a random long string).
-    -   Add `CORS_ORIGINS` (include your future `.github.io` URL).
+On the **"Create a New Web Service"** page, use these exact settings:
+
+1.  **Name**: `compliance-vault-api` (or any name you like)
+2.  **Language**: `Python 3`
+3.  **Branch**: `main`
+4.  **Region**: `Oregon (US West)` (Default is fine)
+5.  **Root Directory**: (Leave Empty)
+6.  **Build Command**: `pip install -r requirements.txt`
+7.  **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+8.  **Instance Type**: `Free`
+
+### 🔑 Critical: Environment Variables
+Scroll down to the **Environment Variables** section and add these three:
+
+| Key | Value |
+| :--- | :--- |
+| `DATABASE_URL` | `sqlite:///./compliance_vault.db` |
+| `SECRET_KEY` | `EnterARandomLongStringOfLettersAndNumbers` |
+| `DEBUG` | `False` |
+
+*Click **Create Web Service** at the bottom.*
+
+---
+
+## Alternative: Hosting on Koyeb (No Credit Card required)
+
+If Render asks for a credit card, **Koyeb.com** is a great alternative that often lets you start without one.
+
+1.  **Sign up** at [Koyeb.com](https://www.koyeb.com).
+2.  **Create Service**: Select "GitHub" and connect your repo.
+3.  **App Category**: Web Service.
+4.  **Instance**: Free (Nano).
+5.  **Build/Run Commands**:
+    -   **Build Command**: Leave **EMPTY** (Turn off the "Override" toggle).
+    -   **Run Command**: `uvicorn app.main:app --host 0.0.0.0 --port 8000` (Turn ON "Override").
+6.  **Env Vars**: Add `DATABASE_URL`, `SECRET_KEY`, and `DEBUG` just like in Render.
+
+## Option 3: Hosting on Railway.app (Trial/Credits)
+
+Railway is very fast and efficient, but it uses a **$5 Trial Credit** system.
+
+1.  **Sign up**: Go to [Railway.app](https://railway.app) and login with GitHub.
+2.  **New Project**: Select "Deploy from GitHub repo".
+3.  **🔧 IMPORTANT: Set up Data Persistence (SQLite)**:
+    -   Once deployed, go to your service dashboard.
+    -   Click the **"Settings"** tab.
+    -   Find **"Volumes"** and click **"Add Volume"**.
+    -   Set **Mount Path** to: `/data`.
+4.  **🔑 Update Env Vars**:
+    -   Go to the **"Variables"** tab.
+    -   Set `DATABASE_URL` to: `sqlite:////data/compliance_vault.db`
+    -   Add `SECRET_KEY` and `DEBUG=False`.
+5.  **Restart**: Redeploy or Restart the service to apply the volume.
 
 ---
 
 ## Step 2: Frontend Deployment (GitHub Pages)
 
+Once Render gives you a URL (e.g., `https://compliance-vault-api.onrender.com`), do this:
+
 1.  **Update API URL**:
-    -   In `frontend/js/api.js`, change the `BASE_URL` to your Render app URL (e.g., `https://niap-backend.onrender.com/api`).
+    -   Open `frontend/js/api.js`.
+    -   Change the `BASE_URL`:
+        ```javascript
+        const BASE_URL = 'https://compliance-vault-api.onrender.com/api';
+        ```
 2.  **Push to GitHub**:
-    -   Ensure your `frontend/` folder is in the root or appropriate subfolder.
+    ```powershell
+    git add frontend/js/api.js
+    git commit -m "Update API URL for production"
+    git push origin main
+    ```
 3.  **Enable GitHub Pages**:
-    -   Go to Repository **Settings** -> **Pages**.
-    -   Select the branch and the `/frontend` folder (if you move it to a dedicated branch or folder).
-    -   *Preferred*: Use a dedicated `gh-pages` branch containing only the contents of the `frontend/` directory.
+    -   Go to Repo **Settings** -> **Pages**.
+    -   **Source**: Deploy from a branch.
+    -   **Branch**: `main` / **Folder**: `/ (root)`.
 
 ## Step 3: Domain Mapping (GoDaddy & azbers.com)
 
