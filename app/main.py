@@ -58,6 +58,7 @@ if os.path.exists(frontend_dir):
 @app.on_event("startup")
 async def startup_event():
     """Initialize database on startup"""
+    print(f"✅ LOADED CORS ORIGINS: {origins}")
     init_db()
 
 @app.get("/api/health")
