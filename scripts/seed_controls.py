@@ -18,10 +18,12 @@ def seed_controls():
     db = SessionLocal()
 
     try:
-        # Check if data already exists
-        if db.query(Control).count() > 0:
-            print("Database already contains controls. Skipping.")
-            return
+        # Check if data exists - if so, we need to UPDATE or REPLACE because the previous seed was broken
+        existing_count = db.query(Control).count()
+        if existing_count > 0:
+            print(f"Found {existing_count} existing controls. clearing to re-seed with correct data mapping...")
+            db.query(Control).delete()
+            db.commit()
 
         # Define Controls with their Domain info embedded
         controls_data = [
@@ -47,7 +49,12 @@ def seed_controls():
                 section=c["name"], # Using name as section/title
                 domain=c["domain"],
                 domain_code=c["domain_code"],
+                
+                # FIX: Map description to statement AND summary so it shows in UI
+                control_statement=c["description"],
+                control_summary=c["description"],
                 control_description=c["description"],
+                
                 # Defaults
                 is_baseline=True,
                 is_applicable=True
