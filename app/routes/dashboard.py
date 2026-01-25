@@ -438,7 +438,7 @@ async def get_public_stats(db: Session = Depends(get_db)):
 
     # Platform-wide totals
     total_evaluations = db.query(func.count(Evaluation.id)).scalar()
-    evals_with_evidence = db.query(func.count(Evaluation.id)).filter(Evaluation.evidence != None).scalar()
+    evals_with_evidence = db.query(Evaluation).filter(Evaluation.evidence.any()).count()
     platform_evidence_coverage = round((evals_with_evidence / total_evaluations * 100), 1) if total_evaluations > 0 else 0.0
     
     avg_score = total_score / total_orgs if total_orgs > 0 else 0
