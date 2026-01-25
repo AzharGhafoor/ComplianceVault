@@ -17,9 +17,8 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
     
-    # CORS
-    # CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://localhost:8000,http://127.0.0.1:8000"
-    CORS_ORIGINS: str = "https://azharghafoor.github.io,https://compliance.azbers.com,https://compliancevault-production.up.railway.app"
+    # CORS - Include both localhost (for dev) and production URLs
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://localhost:8000,http://127.0.0.1:8000,https://azharghafoor.github.io,https://compliance.azbers.com,https://compliancevault-production.up.railway.app"
     
     # File uploads
     UPLOAD_DIR: str = "uploads"

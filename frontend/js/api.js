@@ -59,7 +59,20 @@ async function request(endpoint, options = {}) {
         throw new Error('Unauthorized');
     }
 
-    const data = await response.json();
+    // Handle non-JSON error responses (e.g., 500 Internal Server Error)
+    let data;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+    } else {
+        // Server returned non-JSON (likely HTML error page)
+        const text = await response.text();
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
+        // If response is OK but not JSON, return as-is
+        return text;
+    }
 
     if (!response.ok) {
         throw new Error(data.detail || 'An error occurred');
