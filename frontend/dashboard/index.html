@@ -701,7 +701,7 @@
                 <div class="chart-header">
                     <h3 class="chart-title">Domain Compliance</h3>
                 </div>
-                <div style="height: 800px;">
+                <div style="height: 500px;">
                     <canvas id="domainChart"></canvas>
                 </div>
             </div>
@@ -980,7 +980,7 @@
                     }
                 });
 
-                // Domain chart (Stacked: Baseline vs Additional)
+                // Domain chart (Stacked: Baseline vs Additional) - Show ALL domains
                 const allDomains = data.domain_scores;
                 new Chart(document.getElementById('domainChart'), {
                     type: 'bar',
@@ -1016,11 +1016,12 @@
                             x: {
                                 stacked: true,
                                 grid: { color: 'rgba(255,255,255,0.1)' },
-                                ticks: { color: '#9ca3af', font: { size: 10 } }
+                                ticks: { color: '#9ca3af' }
                             },
                             y: {
+                                stacked: true,
                                 grid: { display: false },
-                                ticks: { color: '#9ca3af', font: { size: 10 } }
+                                ticks: { color: '#9ca3af', font: { size: 9 } }
                             }
                         },
                         plugins: {
@@ -1028,7 +1029,6 @@
                         }
                     }
                 });
-
                 // Critical alerts
                 const criticalContainer = document.getElementById('criticalAlerts');
                 if (data.critical_domains.length === 0) {
