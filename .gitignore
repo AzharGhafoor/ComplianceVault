@@ -1,10 +1,22 @@
+# Environment variables
 .env
-backend/.env
+
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 .venv/
-.vscode/
-.DS_Store
-uploads/
+env/
+venv/
+ENV/
+
+# Databases
 *.db
-!compliance_vault.db
+*.sqlite3
+
+# Local uploads
+uploads/
+
+# IDEs
+.vscode/
+.idea/

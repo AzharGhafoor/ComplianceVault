@@ -309,7 +309,7 @@ async def get_dashboard_overview(
             "score": d.score,
             "fully_applied": d.fully_applied,    # Added back
             "total_controls": d.total_controls   # Added back
-        } for d in critical_domains],  # Return all critical domains
+        } for d in critical_domains[:5]],  # Top 5 worst domains
         
         is_bia_assessed=is_assessed
     )
