@@ -26,7 +26,7 @@ app = FastAPI(
 )
 
 # Configure CORS
-origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
+origins = settings.CORS_ORIGINS.split(",")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -58,7 +58,6 @@ if os.path.exists(frontend_dir):
 @app.on_event("startup")
 async def startup_event():
     """Initialize database on startup"""
-    print(f"✅ LOADED CORS ORIGINS: {origins}")
     init_db()
 
 @app.get("/api/health")

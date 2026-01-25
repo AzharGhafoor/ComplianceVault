@@ -10,13 +10,6 @@ class Settings(BaseSettings):
     
     # Database
     DATABASE_URL: str = "sqlite:///./compliance_vault.db"
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        # Use Railway volume if available
-        if "RAILWAY_VOLUME_MOUNT_PATH" in os.environ:
-            volume_path = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH")
-            self.DATABASE_URL = f"sqlite:///{volume_path}/compliance_vault.db"
     SQLALCHEMY_ECHO: bool = False
     
     # Security
@@ -26,17 +19,11 @@ class Settings(BaseSettings):
     
     # CORS
     # CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://localhost:8000,http://127.0.0.1:8000"
-    CORS_ORIGINS: str = "https://azharghafoor.github.io,https://compliance.azbers.com,https://compliancevault.netlify.app,https://compliancevault-production.up.railway.app"
+    CORS_ORIGINS: str = "https://azharghafoor.github.io,https://compliance.azbers.com,https://compliancevault-production.up.railway.app"
     
-    # File uploads (will be set in __init__ for Railway)
+    # File uploads
     UPLOAD_DIR: str = "uploads"
     MAX_FILE_SIZE: int = 10 * 1024 * 1024  # 10MB
-    
-    def __post_init__(self):
-        # Override upload dir if Railway volume exists
-        if "RAILWAY_VOLUME_MOUNT_PATH" in os.environ:
-            volume_path = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH")
-            self.UPLOAD_DIR = f"{volume_path}/uploads"
     
     class Config:
         env_file = ".env"

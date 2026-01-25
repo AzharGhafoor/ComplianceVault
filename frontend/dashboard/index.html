@@ -701,7 +701,7 @@
                 <div class="chart-header">
                     <h3 class="chart-title">Domain Compliance</h3>
                 </div>
-                <div style="height: 500px;">
+                <div style="height: 850px;">
                     <canvas id="domainChart"></canvas>
                 </div>
             </div>
@@ -981,25 +981,25 @@
                 });
 
                 // Domain chart (Stacked: Baseline vs Additional)
-                const topDomains = data.domain_scores.slice(0, 10);
+                const chartDomains = data.domain_scores;
                 new Chart(document.getElementById('domainChart'), {
                     type: 'bar',
                     data: {
-                        labels: topDomains.map(d => d.domain_code),
+                        labels: chartDomains.map(d => d.domain_code),
                         datasets: [
                             {
                                 label: 'Baseline',
-                                data: topDomains.map(d => d.baseline_fully_applied),
+                                data: chartDomains.map(d => d.baseline_fully_applied),
                                 backgroundColor: '#3b82f6',
                             },
                             {
                                 label: 'Additional',
-                                data: topDomains.map(d => d.additional_fully_applied),
+                                data: chartDomains.map(d => d.additional_fully_applied),
                                 backgroundColor: '#10b981',
                             },
                             {
                                 label: 'Missing',
-                                data: topDomains.map(d => {
+                                data: chartDomains.map(d => {
                                     const target = d.baseline_controls + Math.max(d.additional_control_target, d.additional_applicable);
                                     const applied = d.baseline_fully_applied + d.additional_fully_applied;
                                     return target - applied;
@@ -1032,14 +1032,19 @@
 
                 // Critical alerts
                 const criticalContainer = document.getElementById('criticalAlerts');
+                const criticalSection = document.getElementById('criticalSection');
+
                 if (data.critical_domains.length === 0) {
-                    document.getElementById('criticalSection').style.display = 'none';
+                    criticalSection.style.display = 'none';
                 } else {
-                    criticalContainer.innerHTML = data.critical_domains.map(d => `
-                        <div class="alert-card">
+                    criticalSection.style.display = 'block';
+                    const showAll = data.critical_domains.length > 5;
+
+                    criticalContainer.innerHTML = data.critical_domains.map((d, index) => `
+                        <div class="alert-card ${index >= 5 ? 'hidden-alert' : ''}" ${index >= 5 ? 'style="display: none;"' : ''}>
                             <div class="alert-content">
                                 <svg class="alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
                                 </svg>
                                 <div>
                                     <strong>${d.domain_code}</strong> - ${d.domain}
@@ -1049,6 +1054,21 @@
                             <span class="badge badge-danger">${d.score}%</span>
                         </div>
                     `).join('');
+
+                    if (showAll) {
+                        const toggleBtn = document.createElement('button');
+                        toggleBtn.className = 'btn btn-ghost btn-sm w-full mt-2';
+                        toggleBtn.id = 'toggleCriticalBtn';
+                        toggleBtn.style.color = 'var(--color-danger)';
+                        toggleBtn.textContent = 'See More';
+                        toggleBtn.onclick = () => {
+                            const hidden = criticalContainer.querySelectorAll('.hidden-alert');
+                            const isExpanded = toggleBtn.textContent === 'See Less';
+                            hidden.forEach(el => el.style.display = isExpanded ? 'none' : 'flex');
+                            toggleBtn.textContent = isExpanded ? 'See More' : 'See Less';
+                        };
+                        criticalContainer.appendChild(toggleBtn);
+                    }
                 }
 
                 // Domain list
