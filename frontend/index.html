@@ -21,8 +21,8 @@
         :root {
             --bg-deep: #030407;
             --accent-qatar: #8D1B3D;
-            /* Qatar Maroon-ish but digital */
-            --accent-gold: #D4AF37;
+            /* Qatar Maroon */
+            --accent-light: #fda4af;
             --text-main: #e2e8f0;
             --text-muted: #94a3b8;
             --glass-panel: rgba(255, 255, 255, 0.03);
@@ -154,11 +154,14 @@
             font-weight: 600;
             border-radius: 12px;
             transition: all 0.2s;
+            cursor: pointer;
         }
 
         .btn-primary-xl {
             background: white;
             color: black;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-primary-xl:hover {
@@ -170,6 +173,8 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
             background: transparent;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-outline-xl:hover {
@@ -222,7 +227,36 @@
             line-height: 1.2;
         }
 
-        /* Deep Dive Section */
+        /* Stats Stripe */
+        .stats-stripe {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            border-y: 1px solid var(--glass-border);
+            padding: 4rem 10%;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-lbl {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Methodology Section */
         .policy-section {
             padding: 8rem 0;
             border-top: 1px solid var(--glass-border);
@@ -230,7 +264,6 @@
 
         .section-tag {
             color: var(--accent-qatar);
-            /* Qatar Maroon */
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -296,33 +329,95 @@
             line-height: 1.5;
         }
 
-        /* Stats Strip */
-        .stats-stripe {
-            display: flex;
-            justify-content: space-between;
+        /* Ecosystem Section (New) */
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .framework-card {
             background: rgba(255, 255, 255, 0.02);
-            border-y: 1px solid var(--glass-border);
-            padding: 4rem 10%;
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
         }
 
-        .stat-item {
-            text-align: center;
+        .fw-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
         }
 
-        .stat-num {
-            font-size: 3.5rem;
-            font-weight: 800;
+        .fw-badge {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
             color: white;
-            display: block;
-            line-height: 1;
-            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .stat-lbl {
-            color: var(--text-muted);
-            font-size: 0.9rem;
+        .cia-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cia-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+
+        .cia-card.c {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .cia-card.i {
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .cia-card.a {
+            border-color: rgba(20, 184, 166, 0.3);
+        }
+
+        .cia-letter {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .cia-label {
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 1px;
+        }
+
+        .type-bar {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .type-pill {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* Domain List styles */
@@ -355,6 +450,75 @@
             border-radius: 50%;
         }
 
+        /* Modal Styles */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #0f172a;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: #0f172a;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .modal-body h3 {
+            color: white;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .modal-body p {
+            margin-bottom: 1rem;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+        }
+
         @media (max-width: 1024px) {
             .hero-content {
                 grid-template-columns: 1fr;
@@ -378,7 +542,10 @@
                 display: none;
             }
 
-            /* Hide lines on mobile */
+            .ecosystem-grid {
+                grid-template-columns: 1fr;
+            }
+
             .domain-list {
                 grid-template-columns: 1fr;
             }
@@ -402,10 +569,9 @@
             </a>
             <div style="display: flex; gap: 1rem;">
                 <a href="auth/login.html" class="btn-outline-xl"
-                    style="padding: 0.6rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Log
-                    In</a>
+                    style="padding: 0.6rem 1.5rem; border-radius: 8px; font-size: 0.9rem;">Log In</a>
                 <a href="auth/register.html" class="btn-primary-xl"
-                    style="background: #8D1B3D; color: white; padding: 0.6rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Get
+                    style="background: #8D1B3D; color: white; padding: 0.6rem 1.5rem; border-radius: 8px; font-size: 0.9rem;">Get
                     Started</a>
             </div>
         </div>
@@ -430,11 +596,10 @@
                     </p>
                     <div class="hero-btns">
                         <a href="auth/register.html" class="btn-xl btn-primary-xl">Start Assessment</a>
-                        <a href="#domains" class="btn-xl btn-outline-xl">View 26 Domains</a>
+                        <a href="#ecosystem" class="btn-xl btn-outline-xl">View Frameworks</a>
                     </div>
                 </div>
 
-                <!-- Visual: Domain Matrix -->
                 <div class="domain-matrix-card">
                     <div
                         style="display:flex; justify-content:space-between; margin-bottom: 1.5rem; align-items:center;">
@@ -487,6 +652,65 @@
             </div>
         </section>
 
+        <!-- Ecosystem Section (NEW) -->
+        <section class="policy-section" id="ecosystem"
+            style="background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);">
+            <div class="container-xl">
+                <span class="section-tag">Compliance Ecosystem</span>
+                <h2 class="section-title">Frameworks & Objectives</h2>
+
+                <div class="ecosystem-grid">
+                    <!-- Column 1: Frameworks -->
+                    <div class="framework-card">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: white;">Universal Framework Mappings</h3>
+                        <p style="color: var(--text-muted); margin-top: 1rem; line-height: 1.6;">
+                            Our engine automatically cross-references your NIA Policy compliance against global
+                            standards.
+                            Achieve one, simplify the others.
+                        </p>
+                        <div class="fw-tags">
+                            <div class="fw-badge">ISO 27001<span>:2022</span></div>
+                            <div class="fw-badge">NIST 800-53<span>r5</span></div>
+                            <div class="fw-badge">PCI DSS<span>v4.0</span></div>
+                            <div class="fw-badge">GDPR<span>EU</span></div>
+                            <div class="fw-badge">QSCF<span>Qatar</span></div>
+                            <div class="fw-badge">HIPAA</div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: CIA & Types -->
+                    <div>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: white;">CIA Triad Alignment</h3>
+                        <p style="color: var(--text-muted); margin-top: 0.5rem;">Every control is tagged by objective.
+                        </p>
+
+                        <div class="cia-grid">
+                            <div class="cia-card c">
+                                <span class="cia-letter" style="color: #6366f1;">C</span>
+                                <span class="cia-label">Confidentiality</span>
+                            </div>
+                            <div class="cia-card i">
+                                <span class="cia-letter" style="color: #a855f7;">I</span>
+                                <span class="cia-label">Integrity</span>
+                            </div>
+                            <div class="cia-card a">
+                                <span class="cia-letter" style="color: #14b8a6;">A</span>
+                                <span class="cia-label">Availability</span>
+                            </div>
+                        </div>
+
+                        <h3 style="font-size: 1.1rem; font-weight: 700; color: white; margin-top: 2rem;">Control Types
+                            Covered</h3>
+                        <div class="type-bar">
+                            <div class="type-pill">🛡️ Preventative</div>
+                            <div class="type-pill">🔍 Detective</div>
+                            <div class="type-pill">🔧 Corrective</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Methodology Section -->
         <section class="policy-section">
             <div class="container-xl">
@@ -494,44 +718,29 @@
                 <h2 class="section-title">The Endorsed Workflow</h2>
 
                 <div class="process-row">
-                    <!-- Step 1 -->
                     <div class="process-step">
                         <div class="step-num">1</div>
                         <h3 class="step-title">Business Impact Analysis</h3>
-                        <p class="step-desc">
-                            Automated BIA calculation. Define process criticality based on NIA impact tables
-                            (High/Medium/Low).
-                        </p>
+                        <p class="step-desc">Automated BIA calculation. Define process criticality based on NIA impact
+                            tables.</p>
                     </div>
-
-                    <!-- Step 2 -->
                     <div class="process-step">
                         <div class="step-num">2</div>
                         <h3 class="step-title">Asset Classification</h3>
-                        <p class="step-desc">
-                            Map assets to the <strong>National Data Classification Policy v3.0</strong> (C0 Public to C4
-                            Top Secret).
-                        </p>
+                        <p class="step-desc">Map assets to the <strong>National Data Classification Policy v3.0</strong>
+                            (C0 Public to C4 Top Secret).</p>
                     </div>
-
-                    <!-- Step 3 -->
                     <div class="process-step">
                         <div class="step-num">3</div>
                         <h3 class="step-title">Control Selection</h3>
-                        <p class="step-desc">
-                            System automatically filters Baseline vs. Additional controls based on your Aggregate
-                            Security Level.
-                        </p>
+                        <p class="step-desc">System automatically filters Baseline vs. Additional controls based on
+                            Security Level.</p>
                     </div>
-
-                    <!-- Step 4 -->
                     <div class="process-step">
                         <div class="step-num">4</div>
                         <h3 class="step-title">Evidence & Audit</h3>
-                        <p class="step-desc">
-                            Upload proofs for each control (e.g. Cable Registers for CS, Patch Logs for SS). Generate
-                            compliance reports.
-                        </p>
+                        <p class="step-desc">Upload proofs (e.g. Asset Registers, Logs). Generate compliance status
+                            reports.</p>
                     </div>
                 </div>
             </div>
@@ -542,7 +751,6 @@
             <div class="container-xl">
                 <span class="section-tag">Scope of Coverage</span>
                 <h2 class="section-title">Complete 26-Domain Coverage</h2>
-
                 <div class="domain-list">
                     <div class="domain-group">
                         <h4>Governance & Risk</h4>
@@ -562,7 +770,6 @@
                             <div class="domain-marker"></div> <strong>PM</strong> - Project Management
                         </div>
                     </div>
-
                     <div class="domain-group">
                         <h4>Technical Controls</h4>
                         <div class="domain-item">
@@ -584,7 +791,6 @@
                             <div class="domain-marker"></div> <strong>CR</strong> - Cryptography
                         </div>
                     </div>
-
                     <div class="domain-group">
                         <h4>Operations & Resilience</h4>
                         <div class="domain-item">
@@ -610,8 +816,6 @@
         <section style="padding: 6rem 0; text-align: center;">
             <div class="container-xl">
                 <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem;">Ready for Compliance?</h2>
-                <p style="color: var(--text-muted); margin-bottom: 3rem;">Join leading government entities in Qatar
-                    securing their infrastructure with ComplianceVault.</p>
                 <a href="auth/register.html" class="btn-xl btn-primary-xl"
                     style="background: #8D1B3D; color: white;">Get Started Now</a>
             </div>
@@ -621,23 +825,124 @@
 
     <footer
         style="border-top: 1px solid var(--glass-border); padding: 3rem 0; font-size: 0.9rem; color: var(--text-muted); background: rgba(0,0,0,0.5);">
-        <div class="container-xl" style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                &copy; 2025 ComplianceVault. All rights reserved.
-            </div>
+        <div class="container-xl"
+            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>&copy; 2025 ComplianceVault. All rights reserved.</div>
             <div style="display: flex; gap: 2rem;">
-                <span>Privacy</span>
-                <span>Terms</span>
-                <span>NCSA Guidelines</span>
+                <a href="#" onclick="openModal('privacyModal'); return false;"
+                    style="color: inherit; text-decoration: none;">Privacy</a>
+                <a href="#" onclick="openModal('termsModal'); return false;"
+                    style="color: inherit; text-decoration: none;">Terms</a>
+                <a href="#" onclick="openModal('ncsaModal'); return false;"
+                    style="color: inherit; text-decoration: none;">NCSA Guidelines</a>
             </div>
         </div>
     </footer>
+
+    <!-- Modals -->
+    <div id="privacyModal" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="font-size: 1.25rem; font-weight: 700; color: white;">Privacy Policy</h2>
+                <button class="close-btn" onclick="closeModal('privacyModal')"><svg width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <h3>Data Sovereignty</h3>
+                <p>All data within ComplianceVault is stored strictly within local Qatar data centers, ensuring
+                    compliance with data residency laws.</p>
+                <h3>Encryption Standards</h3>
+                <p>We use AES-256 for data at rest and TLS 1.3 for data in transit. Your evidence files are encrypted
+                    before storage.</p>
+                <h3>Access Control</h3>
+                <p>No third parties have access to your compliance data. Our staff does not access your sensitive
+                    evidence files without explicit written consent for support purposes.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="font-size: 1.25rem; font-weight: 700; color: white;">Terms of Service</h2>
+                <button class="close-btn" onclick="closeModal('termsModal')"><svg width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <h3>Acceptable Use</h3>
+                <p>This platform is intended for authorized use by government entities and regulated organizations for
+                    NIA Policy assessment purposes.</p>
+                <h3>Accountability</h3>
+                <p>You are responsible for the accuracy of the self-assessment data and the validity of the evidence
+                    uploaded.</p>
+                <h3>Liability</h3>
+                <p>ComplianceVault provides the framework for assessment but certification is granted solely by the
+                    National Cyber Security Agency (NCSA) after their independent audit.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="ncsaModal" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="font-size: 1.25rem; font-weight: 700; color: white;">NCSA Guidelines Reference</h2>
+                <button class="close-btn" onclick="closeModal('ncsaModal')"><svg width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <h3>Data Classification Levels (v3.0)</h3>
+                <ul style="list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem;">
+                    <li><strong>C0 (Public)</strong>: Non-sensitive information.</li>
+                    <li><strong>C1 (Internal)</strong>: Accessible to all employees.</li>
+                    <li><strong>C2 (Restricted)</strong>: Specific teams/departments.</li>
+                    <li><strong>C3 (Confidential)</strong>: Severe damage if leaked.</li>
+                    <li><strong>C4 (Top Secret)</strong>: Grave damage to national interest.</li>
+                </ul>
+                <h3>Business Impact Analysis (BIA)</h3>
+                <p>Entities MUST conduct a BIA before selecting controls. The BIA determines whether 'Baseline' or
+                    'Additional' controls apply.</p>
+                <h3>Evidence Retention</h3>
+                <p>Audit evidence should be retained for a minimum period as specified in the organization's data
+                    retention policy, aligned with NIA Policy requirements.</p>
+            </div>
+        </div>
+    </div>
 
     <script>
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 20) nav.classList.add('scrolled');
             else nav.classList.remove('scrolled');
+        });
+
+        // Modal Functions
+        window.openModal = function (id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        window.closeModal = function (id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on clicking backdrop
+        document.querySelectorAll('.modal-backdrop').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
         });
     </script>
 </body>
