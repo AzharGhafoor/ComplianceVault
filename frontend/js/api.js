@@ -145,6 +145,11 @@ export const auth = {
 
     logout() {
         clearAuth();
+        // Set flash message directly to avoid circular dependency issues or just for simplicity
+        localStorage.setItem('cv_flash', JSON.stringify({
+            message: 'Logged out successfully',
+            type: 'success'
+        }));
         window.location.href = '/';
     }
 };

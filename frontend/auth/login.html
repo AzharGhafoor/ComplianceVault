@@ -188,7 +188,7 @@
                 <p>Sign in to continue to your dashboard</p>
             </div>
 
-            <div id="errorMessage" class="error-message"></div>
+            <!-- Removed static error message div -->
 
             <form id="loginForm" class="auth-form">
                 <div class="form-group">
@@ -231,6 +231,7 @@
 
     <script type="module">
         import { auth, isAuthenticated } from '../js/api.js';
+        import { Toast } from '../js/toast.js';
 
         // Redirect if already logged in
         if (isAuthenticated()) {
@@ -238,7 +239,7 @@
         }
 
         const form = document.getElementById('loginForm');
-        const errorMessage = document.getElementById('errorMessage');
+        // Removed errorMessage element reference
         const submitBtn = document.getElementById('submitBtn');
 
         form.addEventListener('submit', async (e) => {
@@ -249,14 +250,14 @@
 
             submitBtn.disabled = true;
             submitBtn.textContent = 'Signing in...';
-            errorMessage.classList.remove('show');
+            // Removed errorMessage class manipulation
 
             try {
                 await auth.login(email, password);
+                // Optional: Show welcome toast if needed, but usually redirect is seamless
                 window.location.href = '../dashboard/';
             } catch (error) {
-                errorMessage.textContent = error.message;
-                errorMessage.classList.add('show');
+                Toast.error(error.message);
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Sign In';
             }

@@ -170,7 +170,7 @@
                 <p>Register your organization for NIAP compliance assessment</p>
             </div>
 
-            <div id="errorMessage" class="error-message"></div>
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
 
             <form id="registerForm">
                 <div class="section-title">Personal Information</div>
@@ -285,13 +285,14 @@
 
     <script type="module">
         import { auth, isAuthenticated } from '../js/api.js';
+        import { Toast } from '../js/toast.js';
 
         if (isAuthenticated()) {
             window.location.href = '../dashboard/';
         }
 
         const form = document.getElementById('registerForm');
-        const errorMessage = document.getElementById('errorMessage');
+        // Removed errorMessage element
         const submitBtn = document.getElementById('submitBtn');
 
         form.addEventListener('submit', async (e) => {
@@ -304,6 +305,7 @@
             // Validate passwords match
             if (password !== confirmPassword) {
                 passwordMismatch.classList.add('show');
+                Toast.error('Passwords do not match');
                 return;
             }
             passwordMismatch.classList.remove('show');
@@ -324,14 +326,15 @@
 
             submitBtn.disabled = true;
             submitBtn.textContent = 'Creating account...';
-            errorMessage.classList.remove('show');
 
             try {
                 await auth.register(data);
-                window.location.href = '../dashboard/';
+                Toast.success('Account created successfully! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = '../dashboard/';
+                }, 1500);
             } catch (error) {
-                errorMessage.textContent = error.message;
-                errorMessage.classList.add('show');
+                Toast.error(error.message);
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Create Account';
             }
