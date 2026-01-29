@@ -10,6 +10,8 @@ from sqlalchemy.orm import sessionmaker
 from app.models import Base, Control
 from app.config import settings
 
+import json
+
 def seed_controls():
     print("Beginning database seeding...")
     
@@ -18,51 +20,45 @@ def seed_controls():
     db = SessionLocal()
 
     try:
-        # Check if data exists - if so, we need to UPDATE or REPLACE because the previous seed was broken
+        # Load controls from JSON file
+        json_path = os.path.join(os.path.dirname(__file__), "niap_controls.json")
+        if not os.path.exists(json_path):
+            print(f"Error: niap_controls.json not found at {json_path}")
+            return
+
+        with open(json_path, 'r', encoding='utf-8') as f:
+            controls_data = json.load(f)
+
         existing_count = db.query(Control).count()
         if existing_count > 0:
-            print(f"Found {existing_count} existing controls. clearing to re-seed with correct data mapping...")
+            print(f"Found {existing_count} existing controls. Clearing to re-seed with full dataset...")
             db.query(Control).delete()
             db.commit()
-
-        # Define Controls with their Domain info embedded
-        controls_data = [
-             # Governance
-            {"code": "SG-01", "name": "Information Security Roles and Responsibilities", "domain_code": "SG", "domain": "Security Governance", "description": "The Agency shall allocate information security roles and responsibilities in accordance with the information security needs of the Agency."},
-            {"code": "SG-02", "name": "Confidentiality Binding", "domain_code": "SG", "domain": "Security Governance", "description": "The Agency shall ensure that all employees, contractors and third party users sign confidentiality/non-disclosure agreements."},
-            {"code": "SG-03", "name": "Segregation of Duties", "domain_code": "SG", "domain": "Security Governance", "description": "The Agency shall enforce segregation of duties to reduce the risk of accidental or deliberate misuse of the Agency's information assets."},
             
-             # Asset Management
-            {"code": "AM-01", "name": "Asset Inventory", "domain_code": "AM", "domain": "Asset Management", "description": "The Agency shall maintain an accurate and up-to-date inventory of all information assets."},
-            {"code": "AM-02", "name": "Asset Ownership", "domain_code": "AM", "domain": "Asset Management", "description": "The Agency shall assign an owner for each information asset who is responsible for its protection."},
-            {"code": "AM-03", "name": "Acceptable Use of Assets", "domain_code": "AM", "domain": "Asset Management", "description": "The Agency shall document and disseminate rules for the acceptable use of information assets."},
-
-            # Risk Management
-            {"code": "RA-01", "name": "Risk Assessment Methodology", "domain_code": "RA", "domain": "Risk Management", "description": "The Agency shall define and document a risk assessment methodology."},
-        ]
-        
         print(f"Creating {len(controls_data)} Controls...")
+        
+        controls_to_add = []
         for c in controls_data:
             # Map input keys to Model columns
             control = Control(
-                control_code=c["code"],
-                section=c["name"], # Using name as section/title
+                control_code=c["control_code"],
+                section=c["section"],
                 domain=c["domain"],
                 domain_code=c["domain_code"],
                 
-                # FIX: Map description to statement AND summary so it shows in UI
-                control_statement=c["description"],
-                control_summary=c["description"],
-                control_description=c["description"],
+                control_statement=c.get("control_statement", ""),
+                control_summary=c.get("control_summary", ""),
+                control_description=c.get("control_description", ""),
                 
-                # Defaults
-                is_baseline=True,
-                is_applicable=True
+                is_baseline=c.get("is_baseline", True),
+                is_applicable=c.get("is_applicable", True)
             )
-            db.add(control)
+            controls_to_add.append(control)
         
+        # Batch insert for performance
+        db.add_all(controls_to_add)
         db.commit()
-        print("✅ Database successfully seeded!")
+        print(f"✅ Database successfully seeded with {len(controls_to_add)} controls!")
 
     except Exception as e:
         db.rollback()
