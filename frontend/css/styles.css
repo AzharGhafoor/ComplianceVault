@@ -48,21 +48,37 @@
     --spacing-xl: 2rem;
     --spacing-2xl: 3rem;
 
-    /* Border Radius */
-    --radius-sm: 0.375rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
-    --radius-full: 9999px;
+    /* Qatar Brand */
+    --qatar-maroon: #8D1B3D;
+}
 
-    /* Transitions */
-    --transition-fast: 150ms ease;
-    --transition-normal: 250ms ease;
-    --transition-slow: 350ms ease;
+.logo-qatar {
+    background: var(--qatar-maroon) !important;
+    border-radius: 8px !important;
+}
 
-    /* Typography */
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+/* Border Radius */
+--radius-sm: 0.375rem;
+--radius-md: 0.5rem;
+--radius-lg: 0.75rem;
+--radius-xl: 1rem;
+--radius-full: 9999px;
+
+/* Transitions */
+--transition-fast: 150ms ease;
+--transition-normal: 250ms ease;
+--transition-slow: 350ms ease;
+
+/* Typography */
+--font-sans: 'Inter',
+-apple-system,
+BlinkMacSystemFont,
+'Segoe UI',
+Roboto,
+sans-serif;
+--font-mono: 'JetBrains Mono',
+'Fira Code',
+monospace;
 }
 
 /* ============== Reset & Base ============== */
