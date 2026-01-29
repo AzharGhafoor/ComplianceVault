@@ -981,7 +981,7 @@
                     }
                 });
 
-                // Domain chart (Stacked: Baseline vs Additional) - Show ALL domains
+                // Domain chart (Stacked: Fully, Partial, Low) - Show ALL domains
                 const allDomains = data.domain_scores;
                 new Chart(document.getElementById('domainChart'), {
                     type: 'bar',
@@ -989,21 +989,26 @@
                         labels: allDomains.map(d => d.domain_code),
                         datasets: [
                             {
-                                label: 'Baseline',
-                                data: allDomains.map(d => d.baseline_fully_applied),
-                                backgroundColor: '#3b82f6',
+                                label: 'Fully Applied',
+                                data: allDomains.map(d => d.fully_applied),
+                                backgroundColor: '#10b981', // Green
                             },
                             {
-                                label: 'Additional',
-                                data: allDomains.map(d => d.additional_fully_applied),
-                                backgroundColor: '#10b981',
+                                label: 'Partially Applied',
+                                data: allDomains.map(d => d.partially_applied),
+                                backgroundColor: '#f59e0b', // Amber
                             },
                             {
-                                label: 'Missing',
+                                label: 'Low Applied',
+                                data: allDomains.map(d => d.low_applied || 0),
+                                backgroundColor: '#8b5cf6', // Purple
+                            },
+                            {
+                                label: 'Remaining',
                                 data: allDomains.map(d => {
                                     const target = d.baseline_controls + Math.max(d.additional_control_target, d.additional_applicable);
-                                    const applied = d.baseline_fully_applied + d.additional_fully_applied;
-                                    return target - applied;
+                                    const applied = d.fully_applied + d.partially_applied + (d.low_applied || 0);
+                                    return Math.max(0, target - applied);
                                 }),
                                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
                             }
@@ -1026,7 +1031,16 @@
                             }
                         },
                         plugins: {
-                            legend: { labels: { color: '#9ca3af' } }
+                            legend: { labels: { color: '#9ca3af' } },
+                            tooltip: {
+                                callbacks: {
+                                    afterBody: function (context) {
+                                        const idx = context[0].dataIndex;
+                                        const d = allDomains[idx];
+                                        return `Score: ${d.score}%`;
+                                    }
+                                }
+                            }
                         }
                     }
                 });
