@@ -1023,11 +1023,11 @@
                 }
                 list.innerHTML = evidence.map(e => `
                     <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;background:var(--bg-tertiary);border-radius:var(--radius-sm);margin-bottom:0.5rem;border:1px solid var(--border-color)">
-                        <div style="flex:1">
-                            <div style="font-size:0.875rem;font-weight:500;color:var(--text-primary);margin-bottom:0.25rem">${e.file_name}</div>
+                        <div style="flex:1;min-width:0">
+                            <div style="font-size:0.875rem;font-weight:500;color:var(--text-primary);margin-bottom:0.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${e.file_name}">${e.file_name}</div>
                             <div style="font-size:0.75rem;color:var(--text-muted)">${(e.file_size / 1024).toFixed(1)} KB • ${e.file_type}</div>
                         </div>
-                        <div style="display:flex;gap:0.5rem">
+                        <div style="display:flex;gap:0.5rem;flex-shrink:0;margin-left:0.5rem">
                             <button class="btn btn-primary btn-sm" onclick="viewEvidence('${controlCode}', '${e.id}')" title="Preview">View</button>
                             <button class="btn btn-secondary btn-sm" onclick="downloadEvidence('${controlCode}', '${e.id}', '${e.file_name}')" title="Download">Download</button>
                             ${canEvaluate ? `<button class="btn btn-danger btn-sm" onclick="deleteEvidence('${controlCode}', '${e.id}')">Delete</button>` : ''}
