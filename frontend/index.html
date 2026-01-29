@@ -5,530 +5,638 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="ComplianceVault - The definitive platform for Qatar NIA Policy 2.0 Compliance. Map, track, and secure your infrastructure against ISO, NIST, and PCI standards.">
-    <title>ComplianceVault - The Gold Standard in NIA Compliance</title>
+        content="ComplianceVault - The only NCSA-aligned platform for Qatar NIA Policy 2.0. Automate BIA, Asset Classification, and Control Assessment (C0-C4).">
+    <title>ComplianceVault | Qatar National Information Assurance Policy 2.0</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        /* Landing Page Specific Overrides */
         :root {
-            --neon-blue: #6366f1;
-            --neon-purple: #a855f7;
-            --neon-teal: #14b8a6;
-            --glass-bg: rgba(17, 24, 39, 0.7);
+            --bg-deep: #030407;
+            --accent-qatar: #8D1B3D;
+            /* Qatar Maroon-ish but digital */
+            --accent-gold: #D4AF37;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --glass-panel: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
+            --gradient-main: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
             overflow-x: hidden;
-            background-color: #050507;
-            background-image:
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        .stat-value {
-            font-family: 'Outfit', sans-serif;
-        }
-
-        /* Navbar */
-        .navbar {
+        /* Animated Background Grid */
+        .bg-grid {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 1.5rem 0;
-            transition: all 0.3s ease;
+            width: 100vw;
+            height: 100vh;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
         }
 
-        .navbar.scrolled {
-            background: rgba(5, 5, 7, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
+        /* Navbar */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 0;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid transparent;
+        }
+
+        .header.scrolled {
+            background: rgba(3, 4, 7, 0.8);
+            border-color: var(--glass-border);
             padding: 1rem 0;
         }
 
-        .navbar-container {
+        .container-xl {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        /* Hero */
-        .hero-section {
-            min-height: 100vh;
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.03em;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            position: relative;
-            padding-top: 100px;
-            text-align: center;
+            gap: 1rem;
+            color: white;
+            text-decoration: none;
         }
 
-        .hero-title {
-            font-size: 5rem;
-            line-height: 1.05;
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 5rem;
+            position: relative;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            background: rgba(141, 27, 61, 0.15);
+            border: 1px solid rgba(141, 27, 61, 0.3);
+            color: #fda4af;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-headline {
+            font-size: 4.5rem;
+            line-height: 1.1;
             font-weight: 800;
             letter-spacing: -0.02em;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
+            background: linear-gradient(180deg, #fff 0%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-highlight {
-            background: linear-gradient(to right, #818cf8, #c084fc, #2dd4bf);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
+        .hero-desc {
             font-size: 1.25rem;
-            color: #94a3b8;
-            max-width: 700px;
+            color: var(--text-muted);
             line-height: 1.6;
             margin-bottom: 3rem;
+            max-width: 600px;
         }
 
-        /* Bento Grid Layout */
-        .bento-section {
-            padding: 2rem 0 8rem;
-        }
-
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, minmax(300px, auto));
+        .hero-btns {
+            display: flex;
             gap: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
         }
 
-        .bento-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .bento-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-        }
-
-        .bento-col-2 {
-            grid-column: span 2;
-        }
-
-        .bento-row-2 {
-            grid-row: span 2;
-        }
-
-        .card-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--neon-blue);
+        .btn-xl {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .card-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .card-text {
-            color: #9ca3af;
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-
-        /* Visual Elements within Cards */
-        .standards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .std-badge {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            padding: 1rem;
-            text-align: center;
-            font-weight: 600;
-            color: #e2e8f0;
+            border-radius: 12px;
             transition: all 0.2s;
         }
 
-        .std-badge:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.4);
+        .btn-primary-xl {
+            background: white;
+            color: black;
+        }
+
+        .btn-primary-xl:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline-xl {
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
+            background: transparent;
         }
 
-        .std-badge span {
-            display: block;
-            font-size: 0.7rem;
-            color: #94a3b8;
-            margin-top: 0.25rem;
-            font-weight: 400;
+        .btn-outline-xl:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .stat-big {
-            font-size: 4rem;
-            font-weight: 700;
-            color: white;
-            line-height: 1;
-            margin: 1rem 0;
+        /* Domain Matrix Visualization */
+        .domain-matrix-card {
+            background: linear-gradient(180deg, rgba(20, 20, 30, 0.8) 0%, rgba(10, 10, 15, 0.9) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 40px 80px -20px black;
         }
 
-        .check-list {
-            margin-top: 1.5rem;
-        }
-
-        .check-item {
-            display: flex;
-            align-items: center;
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            color: #cbd5e1;
-            font-size: 0.9rem;
         }
 
-        .check-icon {
-            color: var(--neon-teal);
-            flex-shrink: 0;
-        }
-
-        /* Tags/Pills */
-        .pill-container {
+        .matrix-cell {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 0.5rem;
-            margin-top: 1.5rem;
+            transition: 0.2s;
         }
 
-        .pill {
-            padding: 0.35rem 0.85rem;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            border: 1px solid;
+        .matrix-cell:hover {
+            background: rgba(141, 27, 61, 0.2);
+            border: 1px solid rgba(141, 27, 61, 0.4);
+            transform: scale(1.05);
+            z-index: 10;
         }
 
-        .pill-blue {
-            background: rgba(99, 102, 241, 0.1);
-            border-color: rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
+        .matrix-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            opacity: 0.6;
         }
 
-        .pill-purple {
-            background: rgba(168, 85, 247, 0.1);
-            border-color: rgba(168, 85, 247, 0.3);
-            color: #d8b4fe;
+        .matrix-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            line-height: 1.2;
         }
 
-        .pill-teal {
-            background: rgba(20, 184, 166, 0.1);
-            border-color: rgba(20, 184, 166, 0.3);
-            color: #5eead4;
-        }
-
-        /* Trust Banner */
-        .trust-banner {
+        /* Deep Dive Section */
+        .policy-section {
+            padding: 8rem 0;
             border-top: 1px solid var(--glass-border);
-            border-bottom: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.01);
-            padding: 1.5rem 0;
+        }
+
+        .section-tag {
+            color: var(--accent-qatar);
+            /* Qatar Maroon */
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
             margin-bottom: 4rem;
         }
 
-        .trust-content {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            flex-wrap: wrap;
+        /* Process Steps */
+        .process-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 6rem;
         }
 
-        .trust-item {
+        .process-step {
+            position: relative;
+        }
+
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 24px;
+            right: -1rem;
+            width: 2rem;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        .step-num {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            color: #64748b;
-            font-weight: 500;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Stats Strip */
+        .stats-stripe {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            border-y: 1px solid var(--glass-border);
+            padding: 4rem 10%;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-lbl {
+            color: var(--text-muted);
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            font-size: 0.8rem;
+        }
+
+        /* Domain List styles */
+        .domain-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .domain-group h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .domain-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .domain-marker {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-qatar);
+            border-radius: 50%;
         }
 
         @media (max-width: 1024px) {
-            .bento-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .bento-col-2 {
-                grid-column: span 2;
-            }
-
-            .hero-title {
-                font-size: 3.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .bento-grid {
+            .hero-content {
                 grid-template-columns: 1fr;
+                text-align: center;
             }
 
-            .bento-col-2 {
-                grid-column: span 1;
+            .hero-btns {
+                justify-content: center;
             }
 
-            .trust-content {
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
+            .matrix-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .process-row {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .process-step::after {
+                display: none;
+            }
+
+            /* Hide lines on mobile */
+            .domain-list {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 
 <body>
+    <div class="bg-grid"></div>
 
-    <nav class="navbar" id="navbar">
-        <div class="container navbar-container">
-            <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+    <header class="header" id="navbar">
+        <div class="container-xl nav-inner">
+            <a href="/" class="logo">
                 <div
-                    style="width: 32px; height: 32px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 8px; display: grid; place-items: center;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-                        <path
-                            d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 9h-2v-2h2v2zm0 4h-2v-2h2v2z" />
+                    style="width: 36px; height: 36px; background: #8D1B3D; border-radius: 8px; display: grid; place-items: center;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
                     </svg>
                 </div>
-                <span style="font-weight: 700; color: white; font-size: 1.1rem;">ComplianceVault</span>
+                ComplianceVault
             </a>
             <div style="display: flex; gap: 1rem;">
-                <a href="auth/login.html" class="btn btn-ghost" style="color: #cbd5e1;">Log In</a>
-                <a href="auth/register.html" class="btn btn-primary btn-sm">Sign Up Free</a>
+                <a href="auth/login.html" class="btn-outline-xl"
+                    style="padding: 0.6rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Log
+                    In</a>
+                <a href="auth/register.html" class="btn-primary-xl"
+                    style="background: #8D1B3D; color: white; padding: 0.6rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem;">Get
+                    Started</a>
             </div>
         </div>
-    </nav>
+    </header>
 
     <main>
-        <!-- Hero -->
-        <section class="hero-section">
-            <div class="container">
-                <div
-                    style="display: inline-block; padding: 0.5rem 1rem; border-radius: 100px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; font-size: 0.85rem; margin-bottom: 2rem; backdrop-filter: blur(4px);">
-                    <span style="color: #4ade80;">●</span> &nbsp; Updated for Qatar NIA Policy v2.0
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container-xl hero-content">
+                <div>
+                    <div class="hero-eyebrow">
+                        <span style="font-size: 1.2em;">🇶🇦</span> National Cyber Security Agency (NCSA) Aligned
+                    </div>
+                    <h1 class="hero-headline">
+                        Master the Qatar <br>
+                        NIA Policy 2.0
+                    </h1>
+                    <p class="hero-desc">
+                        The definitive platform for government entities to implement the <strong>National Information
+                            Assurance Policy</strong>.
+                        Automate your BIA, classify assets (C0-C4), and assess 356 mandatory controls across 26 domains.
+                    </p>
+                    <div class="hero-btns">
+                        <a href="auth/register.html" class="btn-xl btn-primary-xl">Start Assessment</a>
+                        <a href="#domains" class="btn-xl btn-outline-xl">View 26 Domains</a>
+                    </div>
                 </div>
-                <h1 class="hero-title">
-                    The Modern Standard for <br>
-                    <span class="hero-highlight">Information Assurance</span>
-                </h1>
-                <p class="hero-subtitle">
-                    The only platform engineered specifically for Qatar's National Information Assurance Policy.
-                    Manage 356 controls, map global standards, and secure your infrastructure in a single pane of glass.
-                </p>
-                <div style="display: flex; gap: 1rem; justify-content: center;">
-                    <a href="auth/register.html" class="btn btn-primary btn-lg"
-                        style="height: 3.5rem; padding: 0 2.5rem; font-size: 1.1rem; box-shadow: 0 0 30px -5px rgba(99, 102, 241, 0.5);">Start
-                        Assessment</a>
-                    <a href="#features" class="btn btn-secondary btn-lg"
-                        style="height: 3.5rem; padding: 0 2.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">Explore
-                        Features</a>
+
+                <!-- Visual: Domain Matrix -->
+                <div class="domain-matrix-card">
+                    <div
+                        style="display:flex; justify-content:space-between; margin-bottom: 1.5rem; align-items:center;">
+                        <h4 style="font-weight: 700; color: white;">Mandatory Domains</h4>
+                        <span
+                            style="font-size: 0.75rem; color: #94a3b8; font-family: 'JetBrains Mono';">v2.0_FINAL</span>
+                    </div>
+                    <div class="matrix-grid">
+                        <div class="matrix-cell"><span class="matrix-code">GS</span><span class="matrix-name">Gateway
+                                Security</span></div>
+                        <div class="matrix-cell"><span class="matrix-code">AM</span><span class="matrix-name">Asset
+                                Mgmt</span></div>
+                        <div class="matrix-cell"><span class="matrix-code">CS</span><span class="matrix-name">Comm.
+                                Safety</span></div>
+                        <div class="matrix-cell"><span class="matrix-code">SS</span><span class="matrix-name">Software
+                                Security</span></div>
+                        <div class="matrix-cell" style="background: rgba(141, 27, 61, 0.4); border: 1px solid #8D1B3D;">
+                            <span class="matrix-code">IM</span><span class="matrix-name">Incident Mgmt</span></div>
+                        <div class="matrix-cell"><span class="matrix-code">NS</span><span class="matrix-name">Network
+                                Security</span></div>
+                        <div class="matrix-cell"><span class="matrix-code">IE</span><span class="matrix-name">Info
+                                Exchange</span></div>
+                        <div class="matrix-cell"><span class="matrix-code">PR</span><span class="matrix-name">Product
+                                Security</span></div>
+                    </div>
+                    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.8rem; color: #64748b;">
+                        + 18 more domains fully mapped
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Trust Strip -->
-        <div class="trust-banner">
-            <div class="container">
-                <div class="trust-content">
-                    <div class="trust-item">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                        </svg>
-                        Bank-Grade Encryption
+        <!-- Stats Stripe -->
+        <section class="stats-stripe">
+            <div class="stat-item">
+                <span class="stat-num">356</span>
+                <span class="stat-lbl">Mandatory Controls</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">26</span>
+                <span class="stat-lbl">Security Domains</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">100%</span>
+                <span class="stat-lbl">NCSA Compliant</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">5</span>
+                <span class="stat-lbl">Data Levels (C0-C4)</span>
+            </div>
+        </section>
+
+        <!-- Methodology Section -->
+        <section class="policy-section">
+            <div class="container-xl">
+                <span class="section-tag">Methodology</span>
+                <h2 class="section-title">The Endorsed Workflow</h2>
+
+                <div class="process-row">
+                    <!-- Step 1 -->
+                    <div class="process-step">
+                        <div class="step-num">1</div>
+                        <h3 class="step-title">Business Impact Analysis</h3>
+                        <p class="step-desc">
+                            Automated BIA calculation. Define process criticality based on NIA impact tables
+                            (High/Medium/Low).
+                        </p>
                     </div>
-                    <div class="trust-item">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path
-                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                            <line x1="12" y1="22.08" x2="12" y2="12" />
-                        </svg>
-                        356 Controls Covered
+
+                    <!-- Step 2 -->
+                    <div class="process-step">
+                        <div class="step-num">2</div>
+                        <h3 class="step-title">Asset Classification</h3>
+                        <p class="step-desc">
+                            Map assets to the <strong>National Data Classification Policy v3.0</strong> (C0 Public to C4
+                            Top Secret).
+                        </p>
                     </div>
-                    <div class="trust-item">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <line x1="2" y1="12" x2="22" y2="12" />
-                            <path
-                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                        </svg>
-                        Global Framework Mapping
+
+                    <!-- Step 3 -->
+                    <div class="process-step">
+                        <div class="step-num">3</div>
+                        <h3 class="step-title">Control Selection</h3>
+                        <p class="step-desc">
+                            System automatically filters Baseline vs. Additional controls based on your Aggregate
+                            Security Level.
+                        </p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="process-step">
+                        <div class="step-num">4</div>
+                        <h3 class="step-title">Evidence & Audit</h3>
+                        <p class="step-desc">
+                            Upload proofs for each control (e.g. Cable Registers for CS, Patch Logs for SS). Generate
+                            compliance reports.
+                        </p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Features Grid -->
-        <section class="bento-section" id="features">
-            <div class="bento-grid">
+        <!-- Deep Domains Section -->
+        <section class="policy-section" id="domains" style="background: rgba(255,255,255,0.02);">
+            <div class="container-xl">
+                <span class="section-tag">Scope of Coverage</span>
+                <h2 class="section-title">Complete 26-Domain Coverage</h2>
 
-                <!-- Main Feature: Universal Mapping -->
-                <div class="bento-card bento-col-2 bento-row-2">
-                    <span class="card-label">Universal Compatibility</span>
-                    <h3 class="card-title">Interconnected Compliance</h3>
-                    <p class="card-text">
-                        Don't audit twice. Our engine automatically cross-references your NIA Policy compliance against
-                        global standards.
-                        Achieve one, simplify the others.
-                    </p>
-                    <div class="standards-grid">
-                        <div class="std-badge">ISO 27001<span>Information Security</span></div>
-                        <div class="std-badge">PCI DSS<span>Payment Data</span></div>
-                        <div class="std-badge">NIST 800-53<span>Federal Systems</span></div>
-                        <div class="std-badge">HIPAA<span>Health Data</span></div>
-                        <div class="std-badge">GDPR<span>Data Privacy</span></div>
-                        <div class="std-badge">QSCF<span>Qatar Cyber</span></div>
-                    </div>
-                </div>
-
-                <!-- Feature: Data Depth -->
-                <div class="bento-card">
-                    <span class="card-label">Depth of Data</span>
-                    <h3 class="card-title">Precision Scope</h3>
-                    <p class="card-text">Every single control from the NIA Policy manual, digitized and searchable.</p>
-                    <div class="stat-big">356</div>
-                    <div style="color: #94a3b8; font-size: 0.9rem;">Total Security Controls</div>
-                    <div
-                        style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; display:flex; justify-content:space-between;">
-                        <div>
-                            <div style="font-weight:700; color:white;">26</div>
-                            <div style="font-size:0.75rem; color:#64748b;">Domains</div>
+                <div class="domain-list">
+                    <div class="domain-group">
+                        <h4>Governance & Risk</h4>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>IG</strong> - Information Governance
                         </div>
-                        <div>
-                            <div style="font-weight:700; color:white;">2,140+</div>
-                            <div style="font-size:0.75rem; color:#64748b;">Data Points</div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>RM</strong> - Risk Management
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>AM</strong> - Asset Management
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>HR</strong> - Human Resources
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>PM</strong> - Project Management
                         </div>
                     </div>
-                </div>
 
-                <!-- Feature: Granular Filters -->
-                <div class="bento-card">
-                    <span class="card-label">X-Ray Vision</span>
-                    <h3 class="card-title">Granular Filtering</h3>
-                    <p class="card-text">Slice your compliance data exactly how you need to see it.</p>
-                    <div class="pill-container">
-                        <span class="pill pill-blue">Confidentiality</span>
-                        <span class="pill pill-blue">Integrity</span>
-                        <span class="pill pill-blue">Availability</span>
-                        <span class="pill pill-purple">Preventative</span>
-                        <span class="pill pill-purple">Detective</span>
-                        <span class="pill pill-purple">Corrective</span>
-                        <span class="pill pill-teal">Baseline</span>
-                    </div>
-                </div>
-
-                <!-- Feature: Collaboration -->
-                <div class="bento-card">
-                    <span class="card-label">Teamwork</span>
-                    <h3 class="card-title">Role-Based Access</h3>
-                    <ul class="check-list">
-                        <li class="check-item">
-                            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span><strong>Admins</strong> control specific settings</span>
-                        </li>
-                        <li class="check-item">
-                            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span><strong>Auditors</strong> verify evidence</span>
-                        </li>
-                        <li class="check-item">
-                            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span><strong>Viewers</strong> have read-only access</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Feature: Evidence -->
-                <div class="bento-card bento-col-2">
-                    <span class="card-label">Audit Ready</span>
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div>
-                            <h3 class="card-title">Evidence & Chain of Custody</h3>
-                            <p class="card-text">
-                                Upload proofs, screenshots, and policy documents directly to each control.
-                                Maintain a permanent, immutable history of your compliance journey.
-                            </p>
+                    <div class="domain-group">
+                        <h4>Technical Controls</h4>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>NS</strong> - Network Security
                         </div>
-                        <div
-                            style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2)); width: 60px; height: 60px; border-radius: 12px; display: grid; place-items: center;">
-                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                <polyline points="10 9 9 9 8 9"></polyline>
-                            </svg>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>GS</strong> - Gateway Security
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>SS</strong> - Software Security
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>CS</strong> - Communication Safety
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>AC</strong> - Access Control
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>CR</strong> - Cryptography
+                        </div>
+                    </div>
+
+                    <div class="domain-group">
+                        <h4>Operations & Resilience</h4>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>IM</strong> - Incident Management
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>BC</strong> - Business Continuity
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>PS</strong> - Physical Security
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>IE</strong> - Information Exchange
+                        </div>
+                        <div class="domain-item">
+                            <div class="domain-marker"></div> <strong>LO</strong> - Logging & Operations
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
+        <section style="padding: 6rem 0; text-align: center;">
+            <div class="container-xl">
+                <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem;">Ready for Compliance?</h2>
+                <p style="color: var(--text-muted); margin-bottom: 3rem;">Join leading government entities in Qatar
+                    securing their infrastructure with ComplianceVault.</p>
+                <a href="auth/register.html" class="btn-xl btn-primary-xl"
+                    style="background: #8D1B3D; color: white;">Get Started Now</a>
             </div>
         </section>
 
     </main>
 
-    <footer style="border-top: 1px solid var(--glass-border); padding: 4rem 0; text-align: center; color: #64748b;">
-        <div class="container">
-            <div style="font-weight: 700; color: white; font-size: 1.25rem; margin-bottom: 1rem;">ComplianceVault</div>
-            <p>&copy; 2025 Education & Science Sector. Built for the Future of Qatar.</p>
+    <footer
+        style="border-top: 1px solid var(--glass-border); padding: 3rem 0; font-size: 0.9rem; color: var(--text-muted); background: rgba(0,0,0,0.5);">
+        <div class="container-xl" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                &copy; 2025 ComplianceVault. All rights reserved.
+            </div>
+            <div style="display: flex; gap: 2rem;">
+                <span>Privacy</span>
+                <span>Terms</span>
+                <span>NCSA Guidelines</span>
+            </div>
         </div>
     </footer>
 
     <script>
-        // Navbar Scroll
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
-            if (window.scrollY > 10) nav.classList.add('scrolled');
+            if (window.scrollY > 20) nav.classList.add('scrolled');
             else nav.classList.remove('scrolled');
         });
     </script>
